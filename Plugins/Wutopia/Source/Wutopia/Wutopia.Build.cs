@@ -62,14 +62,15 @@ public class Wutopia : ModuleRules
 			);
 
         // add libraries
-        string DllDir = Path.Combine(ModuleDirectory, "ThirdParty/bin");
-        // Dlls
-        foreach (string file in Directory.GetFiles(DllDir))
-        {
-            RuntimeDependencies.Add(file);
-            // delay load
-            string filename = Path.GetFileName(file);
-            PublicDelayLoadDLLs.Add(filename);
-        }
+        
+        // string DllDir = Path.Combine(ModuleDirectory, "ThirdParty/bin");
+        // // Dlls
+        // foreach (string file in Directory.GetFiles(DllDir))
+        // {
+        //     RuntimeDependencies.Add(file);
+        //     // delay load
+        //     string filename = Path.GetFileName(file);
+        //     PublicDelayLoadDLLs.Add(filename);
+        // }
     }
 }

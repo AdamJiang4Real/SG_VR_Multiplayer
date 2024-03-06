@@ -25,7 +25,7 @@ private:
 public:	
 
 	/**
-	 * ÅÉ·¢¼àÌıµÄÏûÏ¢Ğ­Òé
+	 * æ´¾å‘ç›‘å¬çš„æ¶ˆæ¯åè®®
 	 */
 	static void DispatchMessage(FWutopiaData& data);
 

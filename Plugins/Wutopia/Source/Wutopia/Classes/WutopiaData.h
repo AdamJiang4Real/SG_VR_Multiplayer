@@ -115,6 +115,28 @@ struct FWutopiaPoint {
 };
 
 USTRUCT(BlueprintType)
+struct FWutopiaTagBag {
+	GENERATED_USTRUCT_BODY()
+	
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
+	FString tid;
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
+	float x;
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
+	float y;
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
+	float z;
+	
+	FWutopiaTagBag()
+	:
+	tid("NONE"),
+	x(0),
+	y(0),
+	z(0)
+	{}
+};
+
+USTRUCT(BlueprintType)
 struct FWutopiaMap {
 	GENERATED_USTRUCT_BODY()
 		UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
@@ -199,26 +221,6 @@ struct FWutopiaFaceFrameData {
 	}
 };
 
-USTRUCT(BlueprintType)
-struct FWutopiaTagBag {
-	GENERATED_USTRUCT_BODY()
-	
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
-		FString tid;
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
-		float x;
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
-		float y;
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
-		float z;
-	
-	FWutopiaTagBag():
-	tid("NONE"),
-	x(0),
-	y(0),
-	z(0)
-	{}
-};
 
 USTRUCT(BlueprintType)
 
@@ -230,6 +232,8 @@ struct FWutopiaData {
 		FString key;
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
 		FString id;
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
+		FWutopiaTagBag TagBag;
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
 		FWutopiaCam cam;
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")

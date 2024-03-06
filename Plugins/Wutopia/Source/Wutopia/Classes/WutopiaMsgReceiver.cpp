@@ -181,24 +181,12 @@ FWutopiaData AWutopiaMsgReceiver::GetData()
 
 		}
 		data = parseMsg(ReceivedData);
+
+		// UE_LOG(LogTemp, Warning, TEXT("tid is %s"), *data.TagBag.tid);
+		
 		//派发消息
-		UWutopiaoMsgDelegate::DispatchMessage(data);
+		// UWutopiaoMsgDelegate::DispatchMessage(data);
 	}
-
-	//if (useViu)
-	//{
-	//	if (!receivedMsgsViu.empty())
-	//	{
-	//		{
-	//			FScopeLock ScopeLock(&mutex);
-
-	//			ReceivedData = receivedMsgsViu.front();
-	//			receivedMsgsViu.pop();
-
-	//		}
-	//		data = parseMsg(ReceivedData);
-	//	}
-	//}
 	return data;
 }
 
@@ -252,7 +240,10 @@ FWutopiaData AWutopiaMsgReceiver::parseMsg(TSharedPtr<TArray<uint8>, ESPMode::Th
 			if (str == "rq")
 			{
 				data = parseRequest(JsonObject);
+				
 				return data;
+
+				
 			}
 			else // not request add log
 			{
@@ -441,6 +432,24 @@ FWutopiaData AWutopiaMsgReceiver::parseRequest(TSharedPtr<FJsonObject> JsonObjec
 				point.y = y;
 				data.point = point;
 			}
+			else if (str == "TagBag")
+			{
+				FWutopiaTagBag TagBag;
+				FString tid;
+				float x;
+				float y;
+				float z;
+				(*jsonData)->TryGetStringField(TEXT("tid"), tid);
+				(*jsonData)->TryGetNumberField(TEXT("x"), x);
+				(*jsonData)->TryGetNumberField(TEXT("y"), y);
+				(*jsonData)->TryGetNumberField(TEXT("z"), z);
+				
+				TagBag.tid = tid;
+				TagBag.x = x;
+				TagBag.y = y;
+				TagBag.z = z;
+				data.TagBag = TagBag;
+			}
 			else if (str == "custom")
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, "asdasdasd");
@@ -469,7 +478,7 @@ FWutopiaData AWutopiaMsgReceiver::parseRequest(TSharedPtr<FJsonObject> JsonObjec
 				FString IP;
 				int port;
 				int showLog;
-				int  comp;
+				int comp;
 
 				(*jsonData)->TryGetStringField(TEXT("username"), username);
 				(*jsonData)->TryGetStringField(TEXT("uuid"), uuid);
@@ -491,23 +500,7 @@ FWutopiaData AWutopiaMsgReceiver::parseRequest(TSharedPtr<FJsonObject> JsonObjec
 			{
 				//GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, customStr);
 			}
-			else if (str == "TagBag")
-			{
-				FWutopiaTagBag TagBag;
-				FString tid;
-				float x;
-				float y;
-				float z;
-				(*jsonData)->TryGetStringField(TEXT("tid"), tid);
-				(*jsonData)->TryGetNumberField(TEXT("x"), x);
-				(*jsonData)->TryGetNumberField(TEXT("y"), y);
-				(*jsonData)->TryGetNumberField(TEXT("z"), z);
-				
-				TagBag.tid = tid;
-				TagBag.x = x;
-				TagBag.y = y;
-				TagBag.z = z;
-			}
+			
 			else // not supported log
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, "not found");
