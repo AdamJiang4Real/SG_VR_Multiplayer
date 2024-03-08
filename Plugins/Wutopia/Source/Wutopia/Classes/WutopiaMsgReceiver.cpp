@@ -130,7 +130,7 @@ void AWutopiaMsgReceiver::msgRecving()
 			{
 				FScopeLock ScopeLock(&mutex);
 				receivedMsgs.push(ReceivedData);
-				ReceivedMsgs.Enqueue(ReceivedData);
+				// ReceivedMsgs.Enqueue(ReceivedData);
 			}
 			//parseMsg(ReceivedData);
 
@@ -439,15 +439,19 @@ FWutopiaData AWutopiaMsgReceiver::parseRequest(TSharedPtr<FJsonObject> JsonObjec
 				float x;
 				float y;
 				float z;
+				float t;
 				(*jsonData)->TryGetStringField(TEXT("tid"), tid);
 				(*jsonData)->TryGetNumberField(TEXT("x"), x);
 				(*jsonData)->TryGetNumberField(TEXT("y"), y);
 				(*jsonData)->TryGetNumberField(TEXT("z"), z);
+				(*jsonData)->TryGetNumberField(TEXT("z"), z);
+				(*jsonData)->TryGetNumberField(TEXT("t"), t);
 				
 				TagBag.tid = tid;
 				TagBag.x = x;
 				TagBag.y = y;
 				TagBag.z = z;
+				TagBag.t = t;
 				data.TagBag = TagBag;
 			}
 			else if (str == "custom")

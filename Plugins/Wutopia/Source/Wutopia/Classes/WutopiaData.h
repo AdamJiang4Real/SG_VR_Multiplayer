@@ -126,6 +126,8 @@ struct FWutopiaTagBag {
 	float y;
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
 	float z;
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Wutopia")
+	float t;
 	
 	FWutopiaTagBag()
 	:
