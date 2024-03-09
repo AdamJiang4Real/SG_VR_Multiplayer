@@ -1,7 +1,7 @@
 ﻿#include "WutopiaMsgReceiver.h"
 #include "Misc/ScopeLock.h"
 
-#define BUFFER_SIZE 1024*16
+#define BUFFER_SIZE 1024 //*16
 
 //typedef bool(*_on_send_msg)(char* data, size_t size);
 //typedef bool(*_on_start_connect)(OnViuMessageCallback callback, int reconnection_interval);
@@ -48,14 +48,14 @@ AWutopiaMsgReceiver::AWutopiaMsgReceiver(const FObjectInitializer& ObjectInitial
 bool AWutopiaMsgReceiver::StartWutopiaMsgReceiver(const FString& SocketName, const int32 msgPort, const int32 camStreamPort, const int32 lightStreamPort)
 {
 	FIPv4Endpoint Endpoint(FIPv4Address::Any, msgPort);
-	int32 BufferSize = 2 * 1024 * 1024;
+	int32 BufferSize = 2 * 1024; //* 1024;
 	ListenSocket = FUdpSocketBuilder(*SocketName).AsNonBlocking()
 		.AsReusable()
 		.BoundToEndpoint(Endpoint)
 		.WithReceiveBufferSize(BufferSize);
 
 	is_running = true;
-	FTimespan ThreadWaitTime = FTimespan::FromMilliseconds(100);
+	FTimespan ThreadWaitTime = FTimespan::FromMilliseconds(5);
 	msgRecvThread = std::thread(std::bind(&AWutopiaMsgReceiver::msgRecving, this));
 	//GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, FString::Printf(TEXT("useViu %d"),useViu));
 	//GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, IPluginManager::Get().FindPlugin("Wutopia")->GetBaseDir() + "/Config/viu.txt");
@@ -135,6 +135,8 @@ void AWutopiaMsgReceiver::msgRecving()
 			//parseMsg(ReceivedData);
 
 		}
+
+		// FPlatformProcess::Sleep(0.02f);
 	}
 }
 
@@ -1225,7 +1227,7 @@ void AWutopiaMsgReceiver::BroadcastCharacter(FWutopiaCharacterControl chrControl
 			Sender->GetIp(out);
 			int port = Sender->GetPort();
 
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, FString::Printf(TEXT("send to ip: %d, port %d, ret: %d, "), out, port, ret));
+			// GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, FString::Printf(TEXT("send to ip: %d, port %d, ret: %d, "), out, port, ret));
 		}
 	}
 }
