@@ -48,36 +48,39 @@ AWutopiaMsgReceiver::AWutopiaMsgReceiver(const FObjectInitializer& ObjectInitial
 bool AWutopiaMsgReceiver::StartWutopiaMsgReceiver(const FString& SocketName, const int32 msgPort, const int32 camStreamPort, const int32 lightStreamPort)
 {
 	FIPv4Endpoint Endpoint(FIPv4Address::Any, msgPort);
-	int32 BufferSize = 2 * 1024; //* 1024;
-	ListenSocket = FUdpSocketBuilder(*SocketName).AsNonBlocking()
+	int32 BufferSize = 1024; //* 1024;
+	ListenSocket = FUdpSocketBuilder(*SocketName)
+		.AsNonBlocking()
 		.AsReusable()
 		.BoundToEndpoint(Endpoint)
 		.WithReceiveBufferSize(BufferSize);
 
 	is_running = true;
-	FTimespan ThreadWaitTime = FTimespan::FromMilliseconds(5);
+	// FTimespan ThreadWaitTime = FTimespan::FromMilliseconds(5);
 	msgRecvThread = std::thread(std::bind(&AWutopiaMsgReceiver::msgRecving, this));
+	
 	//GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, FString::Printf(TEXT("useViu %d"),useViu));
 	//GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, IPluginManager::Get().FindPlugin("Wutopia")->GetBaseDir() + "/Config/viu.txt");
-	if (camStreamPort != -1)
-	{
-		FIPv4Endpoint EndpointCam(FIPv4Address::Any, camStreamPort);
-		ListenCamSocket = FUdpSocketBuilder(*SocketName).AsNonBlocking()
-			.AsReusable()
-			.BoundToEndpoint(EndpointCam)
-			.WithReceiveBufferSize(BufferSize);
-		camStreamRecvThread = std::thread(std::bind(&AWutopiaMsgReceiver::camStreamRecving, this));
-	}
-
-	if (lightStreamPort != -1)
-	{
-		FIPv4Endpoint EndpointLight(FIPv4Address::Any, lightStreamPort);
-		ListenLightSocket = FUdpSocketBuilder(*SocketName).AsNonBlocking()
-			.AsReusable()
-			.BoundToEndpoint(EndpointLight)
-			.WithReceiveBufferSize(BufferSize);
-		lightStreamRecvThread = std::thread(std::bind(&AWutopiaMsgReceiver::lightStreamRecving, this));
-	}
+	// if (camStreamPort != -1)
+	// {
+	// 	FIPv4Endpoint EndpointCam(FIPv4Address::Any, camStreamPort);
+	// 	ListenCamSocket = FUdpSocketBuilder(*SocketName).AsNonBlocking()
+	// 		.AsReusable()
+	// 		.BoundToEndpoint(EndpointCam)
+	// 		.WithReceiveBufferSize(BufferSize);
+	// 	camStreamRecvThread = std::thread(std::bind(&AWutopiaMsgReceiver::camStreamRecving, this));
+	// }
+	//
+	// if (lightStreamPort != -1)
+	// {
+	// 	FIPv4Endpoint EndpointLight(FIPv4Address::Any, lightStreamPort);
+	// 	ListenLightSocket = FUdpSocketBuilder(*SocketName).AsNonBlocking()
+	// 		.AsReusable()
+	// 		.BoundToEndpoint(EndpointLight)
+	// 		.WithReceiveBufferSize(BufferSize);
+	// 	lightStreamRecvThread = std::thread(std::bind(&AWutopiaMsgReceiver::lightStreamRecving, this));
+	// }
+	
 	return true;
 }
 
@@ -127,18 +130,20 @@ void AWutopiaMsgReceiver::msgRecving()
 			TSharedPtr<TArray<uint8>, ESPMode::ThreadSafe> ReceivedData = MakeShareable(new TArray<uint8>());
 			ReceivedData->SetNumUninitialized(Read);
 			memcpy(ReceivedData->GetData(), RecvBuffer.GetData(), Read);
-			{
-				FScopeLock ScopeLock(&mutex);
-				receivedMsgs.push(ReceivedData);
-				// ReceivedMsgs.Enqueue(ReceivedData);
-			}
-			//parseMsg(ReceivedData);
+			// {
+			// 	FScopeLock ScopeLock(&mutex);
+			// 	receivedMsgs.push(ReceivedData);
+			// 	// ReceivedMsgs.Enqueue(ReceivedData);
+			// }
+
+			parseMsg(ReceivedData);
 
 		}
 
 		// FPlatformProcess::Sleep(0.02f);
 	}
 }
+
 
 bool AWutopiaMsgReceiver::IsConnected()
 {
@@ -242,10 +247,10 @@ FWutopiaData AWutopiaMsgReceiver::parseMsg(TSharedPtr<TArray<uint8>, ESPMode::Th
 			if (str == "rq")
 			{
 				data = parseRequest(JsonObject);
+
+				CurrentData = data;
 				
 				return data;
-
-				
 			}
 			else // not request add log
 			{
@@ -265,6 +270,11 @@ FWutopiaData AWutopiaMsgReceiver::parseMsg(TSharedPtr<TArray<uint8>, ESPMode::Th
 		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, "not a valid msg, ignore");
 		return data;
 	}
+}
+
+FWutopiaData AWutopiaMsgReceiver::GetTagBagData()
+{
+	return CurrentData;
 }
 
 FString AWutopiaMsgReceiver::ParseJsonMsg(TSharedPtr<TArray<uint8>, ESPMode::ThreadSafe> ReceivedData)

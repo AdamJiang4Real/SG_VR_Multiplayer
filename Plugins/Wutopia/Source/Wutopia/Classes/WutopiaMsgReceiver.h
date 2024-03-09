@@ -93,8 +93,14 @@ public:
 		void BroadcastCharacter(FWutopiaCharacterControl chrControl);
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 	void msgRecving();
+
+	
 	FWutopiaData parseMsg(TSharedPtr<TArray<uint8>, ESPMode::ThreadSafe> ReceivedData);
+
+	UFUNCTION(BlueprintCallable, Category = "Wutopia")
+		FWutopiaData GetTagBagData();
 
 	// 解析Debug Json消息 -Tag
 	FString ParseJsonMsg(TSharedPtr<TArray<uint8>, ESPMode::ThreadSafe> ReceivedData);
@@ -136,6 +142,8 @@ public:
 	TArray<uint8> lightRecvBuffer;
 	//FWutopiaLight lightStream;
 	bool gotNewLightStream;
+
+	FWutopiaData CurrentData;
 
 
 	//ScopeLock
