@@ -1,13 +1,16 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{4AF1F611-4AF5-2D49-72CE-9FB6C99C71BB}",
+	"EngineAssociation": "{6ACABAFA-4429-FB1F-9393-7DA0E39900E6}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "SG_VR_Multiplayer",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	],
 	"Plugins": [
@@ -26,6 +29,14 @@
 				"Linux",
 				"Android",
 				"HoloLens"
+			]
+		},
+		{
+			"Name": "SteamVR",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux"
 			]
 		}
 	]
