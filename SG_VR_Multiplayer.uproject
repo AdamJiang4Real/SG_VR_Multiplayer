@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{4AF1F611-4AF5-2D49-72CE-9FB6C99C71BB}",
+	"EngineAssociation": "{4C9F0E18-4CF6-3656-2DBC-1A8CF7D67769}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -20,6 +20,16 @@
 		},
 		{
 			"Name": "OpenXR",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Linux",
+				"Android",
+				"HoloLens"
+			]
+		},
+		{
+			"Name": "VRExpansionPlugin",
 			"Enabled": true,
 			"SupportedTargetPlatforms": [
 				"Win64",

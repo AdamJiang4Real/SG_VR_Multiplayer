@@ -29,7 +29,7 @@ public class Wutopia : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "CoreUObject", "Engine", "InputCore", "Sockets", "Networking", "Messaging", "RenderCore", "RHI","WebBrowserWidget"//, Path.Combine(ModuleDirectory, "ThirdParty/include")
+				"Core", "CoreUObject", "Engine", "InputCore", "Sockets", "Networking", "Messaging", "RenderCore", "HeadMountedDisplay", "RHI","WebBrowserWidget"//, Path.Combine(ModuleDirectory, "ThirdParty/include")
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

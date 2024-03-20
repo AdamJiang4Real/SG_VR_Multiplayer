@@ -274,6 +274,7 @@ FWutopiaData AWutopiaMsgReceiver::parseMsg(TSharedPtr<TArray<uint8>, ESPMode::Th
 
 FWutopiaData AWutopiaMsgReceiver::GetTagBagData()
 {
+	
 	return CurrentData;
 }
 
