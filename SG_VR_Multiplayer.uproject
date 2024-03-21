@@ -40,13 +40,7 @@
 		},
 		{
 			"Name": "Wutopia",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Linux",
-				"Android",
-				"HoloLens"
-			]
+			"Enabled": true
 		}
 	]
 }
