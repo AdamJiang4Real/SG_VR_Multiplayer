@@ -234,7 +234,8 @@ FWutopiaData AWutopiaMsgReceiver::parseMsg(TSharedPtr<TArray<uint8>, ESPMode::Th
 	FUTF8ToTCHAR Convert(reinterpret_cast<const char*>(jsonBytes.GetData()), jsonBytes.Num());
 	FString JsonString(Convert);
 
-	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Blue, JsonString);
+	//GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Blue, JsonString);
+	
 	TSharedPtr<FJsonObject> JsonObject;
 	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
 	bool flag = FJsonSerializer::Deserialize(Reader, JsonObject);
@@ -308,7 +309,7 @@ FWutopiaData AWutopiaMsgReceiver::parseRequest(TSharedPtr<FJsonObject> JsonObjec
 		data.type = str;
 		if (JsonObject->TryGetObjectField(TEXT("da"), jsonData))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, str);
+			// GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, str);
 			if (str == "knapsack")
 			{
 				FString key;
@@ -540,7 +541,7 @@ FWutopiaData AWutopiaMsgReceiver::parseRequest(TSharedPtr<FJsonObject> JsonObjec
 			uint32 out;
 			Sender->GetIp(out);
 			int port = Sender->GetPort();
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, jsonStr);
+			// GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Red, jsonStr);
 
 
 
